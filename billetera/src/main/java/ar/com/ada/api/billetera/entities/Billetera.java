@@ -24,7 +24,7 @@ public class Billetera {
     private Persona persona;
 
     @OneToMany(mappedBy = "billetera", cascade = CascadeType.ALL)
-    private List<Cuenta> cuenta = new ArrayList<>();
+    private List<Cuenta> cuentas = new ArrayList<>();
 
     public Integer getBilleteraId() {
         return billeteraId;
@@ -42,12 +42,16 @@ public class Billetera {
         this.persona = persona;
     }
 
-    public List<Cuenta> getCuenta() {
-        return cuenta;
+    public List<Cuenta> getCuentas() {
+        return cuentas;
     }
 
-    public void setCuenta(List<Cuenta> cuenta) {
-        this.cuenta = cuenta;
+    public void setCuentas(List<Cuenta> cuentas) {
+        this.cuentas = cuentas;
     }
 
+public void agregarCuenta(Cuenta cuenta){
+        this.cuentas.add(cuenta);
+        cuenta.setBilletera(this);
+    }	   
 }

@@ -2,12 +2,21 @@ package ar.com.ada.api.billetera.entities;
 
 import java.sql.Date;
 
+import javax.persistence.*;
+@Entity
+@Table(name="usuario")
 public class Usuario {
+    @Id
+    @Column(name="usuario_id")
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Integer usuarioId ;
     private String username;
-    private String passwors;
+    private String password;
     private String email;
+    @Column(name="fecha_login")
     private Date fechaLogin;
+    @OneToOne
+    @JoinColumn(name="persona_id", referencedColumnName = "persona_id")
     private Persona persona;
 
     public Integer getUsuarioId() {
@@ -26,12 +35,12 @@ public class Usuario {
         this.username = username;
     }
 
-    public String getPasswors() {
-        return passwors;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPasswors(String passwors) {
-        this.passwors = passwors;
+    public void setPassword(String passwors) {
+        this.password = passwors;
     }
 
     public String getEmail() {

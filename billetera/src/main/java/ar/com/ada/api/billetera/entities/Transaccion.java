@@ -3,18 +3,39 @@ package ar.com.ada.api.billetera.entities;
 import java.math.BigDecimal;
 import java.sql.Date;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name="transaccion")
+
 public class Transaccion {
+    @ Id
+    @Column(name="transaccion_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer transaccionId;
+    @ManyToOne
+    @JoinColumn(name="cuenta_id",referencedColumnName = "cuenta_id")
     private Cuenta cuenta ;
     private Date fecha;
+    @Column(name="estado_id")
     private Integer estadoId;
     private BigDecimal importe;
     private String moneda ;
+    @Column(name="tipo_operacion")
     private Integer tipoOperacion;
+    @Column(name="cocepto_operacion")
     private String conceptoOpearcion;
     private String detalle;
+    @Column(name="de_usuario_id")
     private Integer deUsuarioId;
+    @Column(name="a_usuario_id")
     private Integer aUsuarioId;
+    @Column(name="de_cuenta_id")
+    private Integer deCuentaId;
+
+    @Column(name="a_cuenta_id")
+    private Integer aCuentaId;
+
 
     public Integer getTransaccionId() {
         return transaccionId;
@@ -23,13 +44,14 @@ public class Transaccion {
     public void setTransaccionId(Integer transaccionId) {
         this.transaccionId = transaccionId;
     }
-
+    
     public Cuenta getCuenta() {
         return cuenta;
     }
-
+// esta bidireccion va a tarvez del set cuenta 
     public void setCuenta(Cuenta cuenta) {
         this.cuenta = cuenta;
+        this.cuenta.agregarTransaccion(this);
     }
 
     public Date getFecha() {
@@ -102,6 +124,22 @@ public class Transaccion {
 
     public void setaUsuarioId(Integer aUsuarioId) {
         this.aUsuarioId = aUsuarioId;
+    }
+
+    public Integer getDeCuentaId() {
+        return deCuentaId;
+    }
+
+    public void setDeCuentaId(Integer deCuentaId) {
+        this.deCuentaId = deCuentaId;
+    }
+
+    public Integer getaCuentaId() {
+        return aCuentaId;
+    }
+
+    public void setaCuentaId(Integer aCuentaId) {
+        this.aCuentaId = aCuentaId;
     }
 
 } 
