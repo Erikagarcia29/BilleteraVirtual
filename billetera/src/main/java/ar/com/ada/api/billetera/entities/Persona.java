@@ -2,13 +2,35 @@ package ar.com.ada.api.billetera.entities;
 
 import java.sql.Date;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = " persona")
 public class Persona {
+    @Column(name = "persoan_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer personaId;
     private String nombre;
-    private Integer dni;
+    @Column(name = "pais_id")
+    private Integer paisId;
+
+    @Column(name = "tipo_documento")
+    private Integer tipoDocumento;
+
+    private String documento;
+
+    @Column(name = "fecha_nacimiento")
     private Date fechaNacimiento;
     private String nacionalidad;
     private Usuario usuario;
+
+    @OneToOne(mappedBy = "persona", cascade = CascadeType.ALL)
     private Billetera billetera;
 
     public Integer getPersonaId() {
@@ -27,13 +49,7 @@ public class Persona {
         this.nombre = nombre;
     }
 
-    public Integer getDni() {
-        return dni;
-    }
-
-    public void setDni(Integer dni) {
-        this.dni = dni;
-    }
+    
 
     public Date getFechaNacimiento() {
         return fechaNacimiento;
@@ -65,7 +81,31 @@ public class Persona {
 
     public void setBilletera(Billetera billetera) {
         this.billetera = billetera;
+        this.billetera.setPersona(this);
     }
 
+    public Integer getPaisId() {
+        return paisId;
+    }
+
+    public void setPaisId(Integer paisId) {
+        this.paisId = paisId;
+    }
+
+    public Integer getTipoDocumento() {
+        return tipoDocumento;
+    }
+
+    public void setTipoDocumento(Integer tipoDocumento) {
+        this.tipoDocumento = tipoDocumento;
+    }
+
+    public String getDocumento() {
+        return documento;
+    }
+
+    public void setDocumento(String documento) {
+        this.documento = documento;
+    }
 
 }
