@@ -3,7 +3,9 @@ package ar.com.ada.api.billetera;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import ar.com.ada.api.billetera.security.jwt.Crypto;
+import ar.com.ada.api.billetera.security.Crypto;
+
+
 
 @SpringBootTest
 class DemoApplicationTests {

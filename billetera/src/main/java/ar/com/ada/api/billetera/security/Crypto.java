@@ -1,4 +1,4 @@
-package ar.com.ada.api.billetera.security.jwt;
+package ar.com.ada.api.billetera.security;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;

@@ -7,6 +7,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import ar.com.ada.api.billetera.entities.Usuario;
+import ar.com.ada.api.billetera.models.request.LoginRequest;
+import ar.com.ada.api.billetera.models.request.RegistrationRequest;
+import ar.com.ada.api.billetera.models.response.JwtResponse;
+import ar.com.ada.api.billetera.models.response.RegistrationResponse;
+import ar.com.ada.api.billetera.security.jwt.JWTTokenUtil;
 import ar.com.ada.api.billetera.services.*;
 
 
