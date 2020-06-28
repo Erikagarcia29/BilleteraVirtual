@@ -1,9 +1,9 @@
-package ar.com.ada.code.billetera_virtual_back.billetera;
+package ar.com.ada.api.billetera;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import ar.com.ada.code.billetera_virtual_back.security.jwt.Crypto;
+import ar.com.ada.api.billetera.security.jwt.Crypto;
 
 @SpringBootTest
 class DemoApplicationTests {

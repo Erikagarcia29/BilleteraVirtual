@@ -1,4 +1,4 @@
-package ar.com.ada.code.billetera_virtual_back.security.jwt;
+package ar.com.ada.api.billetera.security.jwt;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

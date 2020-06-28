@@ -1,4 +1,4 @@
-package ar.com.ada.code.billetera_virtual_back.models.response;
+package ar.com.ada.api.billetera.models.response;
 
 /**
  * JwtResponse

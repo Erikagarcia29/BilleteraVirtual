@@ -1,4 +1,4 @@
-package ar.com.ada.code.billetera_virtual_back.security.jwt;
+package ar.com.ada.api.billetera.security.jwt;
 
 import java.io.IOException;
 import java.io.Serializable;

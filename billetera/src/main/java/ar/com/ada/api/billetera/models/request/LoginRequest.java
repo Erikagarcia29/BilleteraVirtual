@@ -1,4 +1,4 @@
-package ar.com.ada.code.billetera_virtual_back.models.request;
+package ar.com.ada.api.billetera.models.request;
 
 
 //login request

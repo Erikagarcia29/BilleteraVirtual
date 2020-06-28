@@ -1,4 +1,4 @@
-package ar.com.ada.code.billetera_virtual_back.controllers;
+package ar.com.ada.api.billetera.controllers;
 
 import org.springframework.web.bind.annotation.RestController;
 

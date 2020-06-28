@@ -1,4 +1,4 @@
-package ar.com.ada.code.billetera_virtual_back.security.jwt;
+package ar.com.ada.api.billetera.security.jwt;
 
 import java.io.IOException;
 
@@ -15,7 +15,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import ar.com.ada.code.billetera_virtual_back.services.JWTUserDetailsService;
+
 import io.jsonwebtoken.ExpiredJwtException;
 
 /**
