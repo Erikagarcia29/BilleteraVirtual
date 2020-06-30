@@ -61,8 +61,8 @@ public class BilleteraService {
         cuenta.agregarTransaccion(transaccion);
 
         BigDecimal saldoActual = cuenta.getSaldo();
-        saldoActual.add(saldo);
-        cuenta.setSaldo(saldoActual);
+        BigDecimal saldoNuevo =   saldoActual.add(saldo);
+        cuenta.setSaldo(saldoNuevo);
 
         this.grabar(billetera);
     }
