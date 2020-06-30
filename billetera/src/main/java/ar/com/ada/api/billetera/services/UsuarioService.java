@@ -1,13 +1,17 @@
 package ar.com.ada.api.billetera.services;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ar.com.ada.api.billetera.entities.Billetera;
+import ar.com.ada.api.billetera.entities.Cuenta;
 import ar.com.ada.api.billetera.entities.Persona;
 import ar.com.ada.api.billetera.entities.Usuario;
 import ar.com.ada.api.billetera.repos.UsuarioRepository;
+import ar.com.ada.api.billetera.security.Crypto;
 
 @Service
 
@@ -29,6 +33,9 @@ public class UsuarioService {
 
     @Autowired
     PersonaService personaService;
+
+    @Autowired
+    BilleteraService billeteraService;
 
     public Usuario buscarPorUsername(String username) {
         return null;
@@ -56,11 +63,31 @@ public class UsuarioService {
         Usuario usuario = new Usuario();
         usuario.setUsername(email);
         usuario.setEmail(email);
-        usuario.setPassword(password);
+        usuario.setPassword(Crypto.encrypt(password,email));
 
         persona.setUsuario(usuario);
 
         personaService.grabar(persona);
+
+
+        Billetera billetera = new Billetera();
+
+        Cuenta pesos = new Cuenta();
+
+        pesos.setSaldo(new BigDecimal(0));
+        pesos.setMoneda("ARS");
+
+        Cuenta dolares = new Cuenta();
+
+        pesos.setSaldo(new BigDecimal(0));
+        pesos.setMoneda("USD");
+
+        billetera.agregarCuenta(pesos);
+        billetera.agregarCuenta(dolares);
+
+        persona.setBilletera(billetera);
+
+        billeteraService.grabar(billetera);
 
         return usuario;
     }
