@@ -23,8 +23,8 @@ public class Transaccion {
     private String moneda ;
     @Column(name="tipo_operacion")
     private Integer tipoOperacion;
-    @Column(name="cocepto_operacion")
-    private String conceptoOpearcion;
+    @Column(name="concepto_operacion")
+    private String conceptoOperacion;
     private String detalle;
     @Column(name="de_usuario_id")
     private Integer deUsuarioId;
@@ -94,12 +94,12 @@ public class Transaccion {
         this.tipoOperacion = tipoOperacion;
     }
 
-    public String getConceptoOpearcion() {
-        return conceptoOpearcion;
+    public String getConceptoOperacion() {
+        return conceptoOperacion;
     }
 
-    public void setConceptoOpearcion(String conceptoOpearcion) {
-        this.conceptoOpearcion = conceptoOpearcion;
+    public void setConceptoOperacion(String conceptoOperacion) {
+        this.conceptoOperacion = conceptoOperacion;
     }
 
     public String getDetalle() {
