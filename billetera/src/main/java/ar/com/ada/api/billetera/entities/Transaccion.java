@@ -58,8 +58,8 @@ public class Transaccion {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
+    public void setFecha(java.util.Date date) {
+        this.fecha =new Date();
     }
 
     public Integer getEstadoId() {

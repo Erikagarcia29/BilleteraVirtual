@@ -53,5 +53,18 @@ public class Billetera {
 public void agregarCuenta(Cuenta cuenta){
         this.cuentas.add(cuenta);
         cuenta.setBilletera(this);
-    }	   
+    }
+
+    public Cuenta getCuenta(String moneda){
+
+        for(Cuenta cuenta: this.cuentas){
+
+            if(cuenta.getMoneda().equals(moneda)){
+
+                return cuenta;
+            }
+        }
+        return null;
+    }
+
 }

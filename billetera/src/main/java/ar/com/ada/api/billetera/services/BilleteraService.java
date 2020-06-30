@@ -1,9 +1,14 @@
 package ar.com.ada.api.billetera.services;
 
+import java.math.BigDecimal;
+import java.util.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ar.com.ada.api.billetera.entities.Billetera;
+import ar.com.ada.api.billetera.entities.Cuenta;
+import ar.com.ada.api.billetera.entities.Transaccion;
 import ar.com.ada.api.billetera.repos.BilleteraRepository;
 
 @Service
@@ -31,4 +36,36 @@ public class BilleteraService {
     public void grabar(Billetera billetera){
         billeteraRepository.save(billetera);
     }
+
+    public void cargarSaldo(BigDecimal saldo, String moneda, Integer billeteraId, 
+    String conceptoOperacion, String detalle){
+
+        Billetera billetera = billeteraRepository.findByBilleteraId(billeteraId);
+
+        Cuenta cuenta = billetera.getCuenta(moneda);
+
+        Transaccion transaccion = new Transaccion();
+        //transaccion.setCuenta(cuenta);
+        transaccion.setMoneda(moneda);
+        transaccion.setFecha(new Date());
+        transaccion.setConceptoOperacion(conceptoOperacion);
+        transaccion.setDetalle(detalle);
+        transaccion.setImporte(saldo);
+        transaccion.setTipoOperacion(1);// 1 Entrada, 0 Salida
+        transaccion.setEstadoId(2);// -1 Rechazada 0 Pendiente 2 Aprobada
+        transaccion.setDeCuentaId(cuenta.getCuentaId());
+        transaccion.setDeUsuarioId(billetera.getPersona().getUsuario().getUsuarioId());
+        transaccion.setaUsuarioId(billetera.getPersona().getUsuario().getUsuarioId());
+        transaccion.setaCuentaId(cuenta.getCuentaId());
+
+        cuenta.agregarTransaccion(transaccion);
+
+        BigDecimal saldoActual = cuenta.getSaldo();
+        saldoActual.add(saldo);
+        cuenta.setSaldo(saldoActual);
+
+        this.grabar(billetera);
+    }
+
+
 }
