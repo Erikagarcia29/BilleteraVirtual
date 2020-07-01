@@ -1,7 +1,7 @@
 package ar.com.ada.api.billetera.entities;
-import java.util.*; 
+import java.util.Date; 
 import java.math.BigDecimal;
-import java.sql.Date;
+
 
 import javax.persistence.*;
 

@@ -68,4 +68,19 @@ public class BilleteraService {
     }
 
 
+    public BigDecimal consultarSaldo (Integer billeteraId, String moneda){
+
+        Billetera billetera = repo.findByBilleteraId(billeteraId);
+
+        Cuenta cuenta = billetera.getCuenta(moneda);
+
+        return cuenta.getSaldo();
+
+    }
+
+    public Billetera buscarPorId(Integer id){
+
+        return repo.findByBilleteraId(id);
+    }
+
 }
