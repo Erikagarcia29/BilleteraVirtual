@@ -13,6 +13,10 @@ import ar.com.ada.api.billetera.repos.BilleteraRepository;
 
 @Service
 public class BilleteraService {
+
+    @Autowired
+    BilleteraRepository repo;
+
     /* 1.Metodo: Cargar saldo
     1.1-- Recibir un importe, se busca una billetera por id,
     se busca una cuenta por la moneda

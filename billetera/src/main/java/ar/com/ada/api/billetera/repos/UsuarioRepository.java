@@ -7,5 +7,6 @@ import ar.com.ada.api.billetera.entities.Usuario;
 
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer>{
-    
+    public Usuario findByUsername(String username);
+    public Usuario findByEmail(String email);
 }
