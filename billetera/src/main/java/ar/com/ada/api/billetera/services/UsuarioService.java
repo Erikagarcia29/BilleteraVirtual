@@ -25,7 +25,6 @@ public class UsuarioService {
      * a validar los datos 2.3-- devolver un verdadero o falso
      */
 
-   
     @Autowired
     UsuarioRepository repo;
 
@@ -35,28 +34,25 @@ public class UsuarioService {
     @Autowired
     BilleteraService billeteraService;
 
-    
-
     public Usuario buscarPorUsername(String username) {
         return repo.findByUsername(username);
     }
 
     public void login(String userName, String password) {
-    }
+    
 
-    /**
+        /**
          * Metodo IniciarSesion recibe usuario y contraseña validar usuario y contraseña
          */
 
-        Usuario u = buscarPorUsername(username);
+        Usuario u = buscarPorUsername(userName);
 
-    if(u==null||!u.getPassword().equals(Crypto.encrypt(password,u.getUsername())))
-    {
+        if(u==null||!u.getPassword().equals(Crypto.encrypt(password,u.getUsername()))){
 
-        throw new BadCredentialsException("Usuario o contraseña invalida");
+         throw new BadCredentialsException("Usuario o contraseña invalida");
+           }
     }
-
-    public Usuario crearUsuario(String nombre ,Integer pais, Integer tipoDocumento, String documento, Date fechaNacimiento,
+    public Usuario crearUsuario (String nombre ,Integer pais, Integer tipoDocumento, String documento, Date fechaNacimiento,
             String email, String password) {
 
         /*
@@ -105,6 +101,4 @@ public class UsuarioService {
         return usuario;
     }
 
-
-
-} 
+}
