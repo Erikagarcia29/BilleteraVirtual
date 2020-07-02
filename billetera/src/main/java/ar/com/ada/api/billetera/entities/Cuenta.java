@@ -4,6 +4,12 @@ import java.math.BigDecimal;
 import java.util.*;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+import org.springframework.data.repository.query.parser.Part.IgnoreCaseType;
 @Entity
 @Table(name="cuenta")
 public class Cuenta {
@@ -17,6 +23,8 @@ public class Cuenta {
     @JoinColumn(name= " billetera_id",referencedColumnName = "billetera_id")
     private Billetera billetera ;
     @OneToMany(mappedBy = "cuenta",cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JsonIgnore
     private List<Transaccion >transacciones = new ArrayList <>();
 
     public Integer getCuentaId() {

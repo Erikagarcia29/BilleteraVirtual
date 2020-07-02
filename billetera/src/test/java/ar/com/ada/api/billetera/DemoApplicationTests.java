@@ -2,16 +2,29 @@ package ar.com.ada.api.billetera;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.math.BigDecimal;
+import java.util.Date;
+
+
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+
+import ar.com.ada.api.billetera.entities.Usuario;
 import ar.com.ada.api.billetera.security.Crypto;
+import ar.com.ada.api.billetera.services.UsuarioService;
 
 
 
 @SpringBootTest
 class DemoApplicationTests {
+	
+	@Autowired
+	UsuarioService usuarioService;
 
+	
+	
 	@Test
 	void contextLoads() {
 		String textoClaro = "Este es un texto que todos pueden leer";
@@ -66,7 +79,27 @@ class DemoApplicationTests {
 		// Todo va a estar bien, si el hash del texto es el 
 		assertTrue(textoHasheado.equals(hashEsperado));
 
-	}		}
+	}	
+
+	@Test
+    void CrearUsuarioTest() {
+
+       
+		
+		Usuario usuario = usuarioService.crearUsuario("Karen", 32, 5, "21231123", new Date(), "karen@gmail.com",
+				"a12345");
+
+       // System.out.println("SALDO de usuario: " + usuario.getPersona().getBilletera().getCuenta("ARS").getSaldo());
+	   
+	 //Usuario usuarioVerificado = usuarioService.buscarPorUsername(usuario.getUsername());
+	 
+	 //assertTrue(usuario.getUsuarioId() == usuarioVerificado.getUsuarioId());
+	   assertTrue(usuario.getUsuarioId()==1);
+        assertTrue(usuario.getPersona().getBilletera().getCuenta("ARS").getSaldo().equals(new BigDecimal(500)));
+
+    }
+
+}
 	
 
 
