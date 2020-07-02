@@ -5,14 +5,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.math.BigDecimal;
 import java.util.Date;
 
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-
 import ar.com.ada.api.billetera.entities.Usuario;
 import ar.com.ada.api.billetera.security.Crypto;
+import ar.com.ada.api.billetera.services.BilleteraService;
 import ar.com.ada.api.billetera.services.UsuarioService;
 
 
@@ -22,6 +21,8 @@ class DemoApplicationTests {
 	
 	@Autowired
 	UsuarioService usuarioService;
+	@Autowired
+	BilleteraService billeteraService;
 
 	
 	
@@ -97,7 +98,36 @@ class DemoApplicationTests {
 	   assertTrue(usuario.getUsuarioId()==1);
         assertTrue(usuario.getPersona().getBilletera().getCuenta("ARS").getSaldo().equals(new BigDecimal(500)));
 
-    }
+	}
+	
+
+	@Test
+	void EnviarSaldoTest() {
+
+		Usuario usuarioEmisor = usuarioService.crearUsuario("Karen Envia", 32, 5 , "21231123", new Date(), "karenenvia@gmail.com", "a12345");
+		Usuario usuarioReceptor = usuarioService.crearUsuario("Claudia Recibe", 32, 5 , "21231123", new Date(), "claudiarecibe@gmail.com", "a12345");
+
+		Integer borigen = usuarioEmisor.getPersona().getBilletera().getBilleteraId();
+		Integer bdestino = usuarioReceptor.getPersona().getBilletera().getBilleteraId();
+
+		BigDecimal saldoOrigen = usuarioEmisor.getPersona().getBilletera().getCuenta("ARS").getSaldo();
+		BigDecimal saldoDestino = usuarioReceptor.getPersona().getBilletera().getCuenta("ARS").getSaldo();
+
+		billeteraService.enviarSaldo(new BigDecimal(1200), "ARS", borigen, bdestino, "PRESTAMO", "ya no me debes nada");
+
+
+		BigDecimal saldoOrigenActualizado = billeteraService.consultarSaldo(borigen, "ARS");
+		BigDecimal saldoDestinoActualizado = billeteraService.consultarSaldo(bdestino, "ARS");
+
+		//AFIRMAMOS QUE, el saldo origen - 1200, sea igual al saldoOrigeActualizado
+		//AFIRMAMOS QUE, el saldo destino + 1200, sea igual al saldoDestinoActualizado
+
+		assertTrue(saldoOrigen.subtract(new BigDecimal(1200)).equals(saldoOrigenActualizado));
+		assertTrue(saldoDestino.add(new BigDecimal(1200)).equals(saldoDestinoActualizado));
+
+
+	}
+
 
 }
 	

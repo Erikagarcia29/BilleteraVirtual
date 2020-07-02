@@ -113,5 +113,9 @@ public class BilleteraService {
         cuentaEntrante.agregarTransaccion(tEntrante);
 
 
+
+        this.grabar(billeteraSaliente);
+        this.grabar(billeteraEntrante);
+
     }
 }
