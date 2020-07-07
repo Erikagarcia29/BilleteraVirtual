@@ -1,7 +1,7 @@
 package ar.com.ada.api.billetera.services;
 
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;

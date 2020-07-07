@@ -1,19 +1,21 @@
 package ar.com.ada.api.billetera.entities;
 
-import java.sql.Date;
+import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = " persona")
 public class Persona {
-    @Column(name = "persoan_id")
+    @Id
+    @Column(name = "persona_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer personaId;
     private String nombre;
