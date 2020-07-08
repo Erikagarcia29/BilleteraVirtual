@@ -22,14 +22,15 @@ public class Persona {
     @Column(name = "pais_id")
     private Integer paisId;
 
-    @Column(name = "tipo_documento")
-    private Integer tipoDocumento;
+    @Column(name = "tipo_documento_id")
+    private Integer tipoDocumentoId;
 
     private String documento;
 
     @Column(name = "fecha_nacimiento")
     private Date fechaNacimiento;
-    private String nacionalidad;
+
+
     @OneToOne(mappedBy = "persona", cascade = CascadeType.ALL)
     private Usuario usuario;
 
@@ -62,14 +63,6 @@ public class Persona {
         this.fechaNacimiento = fechaNacimiento;
     }
 
-    public String getNacionalidad() {
-        return nacionalidad;
-    }
-
-    public void setNacionalidad(String nacionalidad) {
-        this.nacionalidad = nacionalidad;
-    }
-
     public Usuario getUsuario() {
         return usuario;
     }
@@ -95,12 +88,12 @@ public class Persona {
         this.paisId = paisId;
     }
 
-    public Integer getTipoDocumento() {
-        return tipoDocumento;
+    public Integer getTipoDocumentoId() {
+        return tipoDocumentoId;
     }
 
-    public void setTipoDocumento(Integer tipoDocumento) {
-        this.tipoDocumento = tipoDocumento;
+    public void setTipoDocumento(Integer tipoDocumentoId) {
+        this.tipoDocumentoId = tipoDocumentoId;
     }
 
     public String getDocumento() {

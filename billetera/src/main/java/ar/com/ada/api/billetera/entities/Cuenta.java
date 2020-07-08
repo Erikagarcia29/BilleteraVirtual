@@ -6,7 +6,7 @@ import java.util.*;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
+import ar.com.ada.api.billetera.entities.Transaccion.TipoTransaccionEnum;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.data.repository.query.parser.Part.IgnoreCaseType;
@@ -72,20 +72,24 @@ public class Cuenta {
     transaccion.setCuenta(this);
 
     BigDecimal saldoActual = this.getSaldo();
-		if (transaccion.getTipoOperacion().equals(1)) {
+    BigDecimal importe = transaccion.getImporte();
+    BigDecimal saldoNuevo;
+		if (transaccion.getTipoOperacion()== TipoTransaccionEnum.ENTRANTE) {
 
-			BigDecimal saldoNuevo = saldoActual.add(saldo);
-			this.setSaldo(saldoNuevo);
+
+			 saldoNuevo = saldoActual.add(importe);
+		
 		} else {
 
-			BigDecimal saldoNuevo = saldoActual.subtract(saldo);
-			this.setSaldo(saldoNuevo);
-		}
+			 saldoNuevo = saldoActual.subtract(importe);
+			
+        }
+        this.setSaldo(saldoNuevo);
 
 	}
 
 	public Transaccion generarTransaccion(String conceptoOperacion, String detalle, BigDecimal importe,
-			Integer tipoOp) {
+			TipoTransaccionEnum tipoOp) {
 
 		Transaccion transaccion = new Transaccion();
 
@@ -97,7 +101,7 @@ public class Cuenta {
 		transaccion.setTipoOperacion(tipoOp);// 1 Entrada, 0 Salida
 		transaccion.setEstadoId(2);// -1 Rechazada 0 Pendiente 2 Aprobada
 
-		if (transaccion.getTipoOperacion() == 1) { // Es de entrada
+		if (transaccion.getTipoOperacion() == TipoTransaccionEnum.ENTRANTE) { // Es de entrada
 
 			transaccion.setaUsuarioId(billetera.getPersona().getUsuario().getUsuarioId());
 			transaccion.setaCuentaId(this.getCuentaId());
