@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import ar.com.ada.api.billetera.entities.*;
 import ar.com.ada.api.billetera.repos.UsuarioRepository;
 import ar.com.ada.api.billetera.security.Crypto;
+import ar.com.ada.api.billetera.sistema.comm.EmailService;
 
 @Service
 
@@ -33,6 +34,8 @@ public class UsuarioService {
 
     @Autowired
     BilleteraService billeteraService;
+    @Autowired 
+    EmailService emailService;
 
     public Usuario buscarPorUsername(String username) {
         return repo.findByUsername(username);
@@ -97,8 +100,15 @@ public class UsuarioService {
         billeteraService.grabar(billetera);
 
 
-        billeteraService.cargarSaldo(new BigDecimal(500), "ARS", billetera.getBilleteraId(), "regalo", "Bienvenida por creacion de usuario");
-        return usuario;
-    }
+        billeteraService.cargarSaldo(new BigDecimal(500), "ARS",
+         billetera.getBilleteraId(), "regalo", "Bienvenida por creacion de usuario");
 
+         emailService.SendEmail(email, "Bienvenido a tu Billetera Virtual","¡¡Enhorabuena!! Te regalamos 500 pesos para iniar al usar tu billetera");
+        return usuario;
+
+    }
+    public Usuario buscarPorEmail(String email){
+      
+        return usuarioRepository.fyndByEmail ();
+    }
 }
