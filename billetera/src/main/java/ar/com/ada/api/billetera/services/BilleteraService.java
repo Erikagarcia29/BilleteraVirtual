@@ -13,6 +13,7 @@ import ar.com.ada.api.billetera.entities.Usuario;
 import ar.com.ada.api.billetera.entities.Transaccion.ResultadoTransaccionEnum;
 import ar.com.ada.api.billetera.entities.Transaccion.TipoTransaccionEnum;
 import ar.com.ada.api.billetera.repos.BilleteraRepository;
+import ar.com.ada.api.billetera.sistema.comm.EmailService;
 
 @Service
 public class BilleteraService {
@@ -36,40 +37,56 @@ public class BilleteraService {
 
     @Autowired
     BilleteraRepository billeteraRepository;
+    @Autowired
+    EmailService emailService;
 
     public void grabar(Billetera billetera){
         billeteraRepository.save(billetera);
     }
 
-    public void cargarSaldo(BigDecimal saldo, String moneda, Integer billeteraId, 
-    String conceptoOperacion, String detalle){
+    public void cargarSaldo(BigDecimal saldo, String moneda, Integer billeteraId, String conceptoOperacion,
+    String detalle) {
 
-        Billetera billetera = billeteraRepository.findByBilleteraId(billeteraId);
+Billetera billetera = this.buscarPorId(billeteraId);
 
-        Cuenta cuenta = billetera.getCuenta(moneda);
+cargarSaldo(saldo, moneda, billetera, conceptoOperacion, detalle);
+}
 
-        Transaccion transaccion = new Transaccion();
-        //transaccion.setCuenta(cuenta);
-        transaccion.setMoneda(moneda);
-        transaccion.setFecha(new Date());
-        transaccion.setConceptoOperacion(conceptoOperacion);
-        transaccion.setDetalle(detalle);
-        transaccion.setImporte(saldo);
-        transaccion.setTipoOperacion(TipoTransaccionEnum.ENTRANTE);// 1 Entrada, 0 Salida
-        transaccion.setEstadoId(2);// -1 Rechazada 0 Pendiente 2 Aprobada
-        transaccion.setDeCuentaId(cuenta.getCuentaId());
-        transaccion.setDeUsuarioId(billetera.getPersona().getUsuario().getUsuarioId());
-        transaccion.setaUsuarioId(billetera.getPersona().getUsuario().getUsuarioId());
-        transaccion.setaCuentaId(cuenta.getCuentaId());
+/**
+* Metodo cargarSaldo buscar billetera por id se identifica cuenta por moneda
+* determinar importe a cargar hacer transaccion
+* 
+* ver delegaciones sobre entidades
+* 
+*/
 
-        cuenta.agregarTransaccion(transaccion);
+public void cargarSaldo(BigDecimal saldo, String moneda, Billetera billetera, String conceptoOperacion,
+    String detalle) {
 
-        BigDecimal saldoActual = cuenta.getSaldo();
-        BigDecimal saldoNuevo =   saldoActual.add(saldo);
-        cuenta.setSaldo(saldoNuevo);
+Cuenta cuenta = billetera.getCuenta(moneda);
 
-        this.grabar(billetera);
-    }
+Transaccion transaccion = new Transaccion();
+// transaccion.setCuenta(cuenta);
+transaccion.setMoneda(moneda);
+transaccion.setFecha(new Date());
+transaccion.setConceptoOperacion(conceptoOperacion);
+transaccion.setDetalle(detalle);
+transaccion.setImporte(saldo);
+transaccion.setTipoOperacion(TipoTransaccionEnum.ENTRANTE);// 1 Entrada, 0 Salida
+transaccion.setEstadoId(2);// -1 Rechazada 0 Pendiente 2 Aprobada
+transaccion.setDeCuentaId(cuenta.getCuentaId());
+transaccion.setDeUsuarioId(billetera.getPersona().getUsuario().getUsuarioId());
+transaccion.setaUsuarioId(billetera.getPersona().getUsuario().getUsuarioId());
+transaccion.setaCuentaId(cuenta.getCuentaId());
+
+cuenta.agregarTransaccion(transaccion);
+
+this.grabar(billetera);
+
+emailService.SendEmail(billetera.getPersona().getUsuario().getEmail(), "Carga Saldo", "Se cargo con exito el saldo de " + saldo);
+
+}
+
 
 
     public BigDecimal consultarSaldo (Integer billeteraId, String moneda){
@@ -95,7 +112,8 @@ public class BilleteraService {
     2.3-- generar dos transacciones
     */
 
-    public ResultadoTransaccionEnum enviarSaldo(BigDecimal importe, String moneda, Integer billeteraOrigenId, Integer billeteraDestinoId, String concepto, String detalle) {
+    public ResultadoTransaccionEnum enviarSaldo(BigDecimal importe, String moneda, Integer billeteraOrigenId, 
+    Integer billeteraDestinoId, String concepto, String detalle) {
         if (importe.compareTo(new BigDecimal(0)) == -1)
             return ResultadoTransaccionEnum.ERROR_IMPORTE_NEGATIVO;
 

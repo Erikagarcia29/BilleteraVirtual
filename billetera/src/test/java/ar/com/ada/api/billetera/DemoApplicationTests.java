@@ -66,7 +66,7 @@ class DemoApplicationTests {
 
        
 		
-		Usuario usuario = usuarioService.crearUsuario("Karen", new Integer(32), new Integer(5), "21231123", new Date(), "karen@gmail.com",
+		Usuario usuario = usuarioService.crearUsuario("Karen", 32, 5, "21231123", new Date(), "karen@gmail.com",
 				"a12345");
 
        // System.out.println("SALDO de usuario: " + usuario.getPersona().getBilletera().getCuenta("ARS").getSaldo());

@@ -66,9 +66,10 @@ public class Persona {
     public Usuario getUsuario() {
         return usuario;
     }
-
+    // la bideireccion es a travez del set
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
+        this.usuario.setPersona(this);
     }
 
     public Billetera getBilletera() {

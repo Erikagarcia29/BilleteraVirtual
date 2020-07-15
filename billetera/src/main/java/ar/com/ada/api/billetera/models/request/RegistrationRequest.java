@@ -1,6 +1,6 @@
 package ar.com.ada.api.billetera.models.request;
 
-import java.sql.Date;
+import java.util.Date;
 
 //registrationRequest
 public class RegistrationRequest {

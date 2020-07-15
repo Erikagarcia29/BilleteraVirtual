@@ -28,6 +28,7 @@ public class UsuarioService {
 
     @Autowired
     UsuarioRepository repo;
+   
 
     @Autowired
     PersonaService personaService;
@@ -101,7 +102,7 @@ public class UsuarioService {
 
 
         billeteraService.cargarSaldo(new BigDecimal(500), "ARS",
-         billetera.getBilleteraId(), "regalo", "Bienvenida por creacion de usuario");
+         billetera, "regalo", "Bienvenida por creacion de usuario");
 
          emailService.SendEmail(email, "Bienvenido a tu Billetera Virtual","¡¡Enhorabuena!! Te regalamos 500 pesos para iniar al usar tu billetera");
         return usuario;
@@ -109,6 +110,7 @@ public class UsuarioService {
     }
     public Usuario buscarPorEmail(String email){
       
-        return usuarioRepository.fyndByEmail ();
+     
+        return repo.findByEmail(email);
     }
 }
