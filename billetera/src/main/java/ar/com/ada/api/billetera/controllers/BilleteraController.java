@@ -16,6 +16,7 @@ import ar.com.ada.api.billetera.entities.Transaccion.ResultadoTransaccionEnum;
 import ar.com.ada.api.billetera.models.*;
 import ar.com.ada.api.billetera.models.request.CargaRequest;
 import ar.com.ada.api.billetera.models.request.EnvioSaldoRequest;
+import ar.com.ada.api.billetera.models.response.MovimientosResponse;
 import ar.com.ada.api.billetera.models.response.SaldoResponse;
 import ar.com.ada.api.billetera.models.response.TransaccionResponse;
 import ar.com.ada.api.billetera.services.*;
@@ -25,7 +26,8 @@ public class BilleteraController {
 
     @Autowired
     BilleteraService billeteraService;
-
+    @Autowired
+    UsuarioService usuarioService;
     /*
      * webMetodo 1: consultar saldo:GET ruta: /billeteras/{id}/saldos
      * 
@@ -113,4 +115,54 @@ public class BilleteraController {
         return ResponseEntity.badRequest().body(response);
 
     }
+
+    @GetMapping("/billeteras/{id}/movimientos/{moneda}")
+    public ResponseEntity<List<MovimientosResponse>> consultarMovimientos(@PathVariable Integer id, @PathVariable String moneda){
+
+        Billetera billetera = new Billetera();
+        billetera = billeteraService.buscarPorId(id);
+        List<Transaccion> trancciones = billeteraService.listarTransacciones(billetera, moneda);
+        List<MovimientosResponse> res = new ArrayList<>();
+
+        for (Transaccion transaccion : trancciones) {
+
+            MovimientosResponse movimiento = new MovimientosResponse();
+            movimiento.numeroDeTransaccion = transaccion.getTransaccionId();
+            movimiento.fecha = transaccion.getFecha();
+            movimiento.importe = transaccion.getImporte();
+            movimiento.moneda = transaccion.getMoneda();
+            movimiento.conceptoOperacion = transaccion.getConceptoOperacion();
+            movimiento.tipoOperacion = transaccion.getTipoOperacion();
+            movimiento.detalle = transaccion.getDetalle();
+            movimiento.aUsuario = usuarioService.buscarPor(transaccion.getaUsuarioId()).getEmail();
+
+            res.add(movimiento);
+        }
+        return ResponseEntity.ok(res);
+    }
+@GetMapping("/billeteras/{id}/movimientos")
+    public ResponseEntity<List<MovimientosResponse>> consultarMovimientos(@PathVariable Integer id){
+
+        Billetera billetera = new Billetera();
+        billetera = billeteraService.buscarPorId(id);
+        List<Transaccion> trancciones = billeteraService.listarTransacciones(billetera);
+        List<MovimientosResponse> res = new ArrayList<>();
+
+        for (Transaccion transaccion : trancciones) {
+
+            MovimientosResponse movimiento = new MovimientosResponse();
+            movimiento.numeroDeTransaccion = transaccion.getTransaccionId();
+            movimiento.fecha = transaccion.getFecha();
+            movimiento.importe = transaccion.getImporte();
+            movimiento.moneda = transaccion.getMoneda();
+            movimiento.conceptoOperacion = transaccion.getConceptoOperacion();
+            movimiento.tipoOperacion = transaccion.getTipoOperacion();
+            movimiento.detalle = transaccion.getDetalle();
+            movimiento.aUsuario = usuarioService.buscarPor(transaccion.getaUsuarioId()).getEmail();
+
+            res.add(movimiento);
+        }
+        return ResponseEntity.ok(res);
+    }
+
 }

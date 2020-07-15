@@ -83,7 +83,7 @@ cuenta.agregarTransaccion(transaccion);
 
 this.grabar(billetera);
 
-emailService.SendEmail(billetera.getPersona().getUsuario().getEmail(), "Carga Saldo", "Se cargo con exito el saldo de " + saldo);
+emailService.SendEmail(billetera.getPersona().getUsuario().getEmail(), "Carga Saldo", "Tu carga fue exitosa. Saldo" + saldo);
 
 }
 
@@ -159,7 +159,15 @@ emailService.SendEmail(billetera.getPersona().getUsuario().getEmail(), "Carga Sa
         this.grabar(billeteraSaliente);
         this.grabar(billeteraEntrante);
        
+
+        emailService.SendEmail(billeteraEntrante.getPersona().getUsuario().getEmail(), "Transferencia", "Recibio " + importe + " de el usuario " + billeteraSaliente.getPersona().getUsuario().getEmail());
+        emailService.SendEmail(billeteraSaliente.getPersona().getUsuario().getEmail(), "Transferencia", "Se realizo la transferencia con exito a " + billeteraEntrante.getPersona().getUsuario().getEmail() + " y recibio " + importe);
+
+
         return ResultadoTransaccionEnum.INICIADA;
+
+
+        
     }
 
     public ResultadoTransaccionEnum enviarSaldo(BigDecimal importe, String moneda, Integer billeteraOrigenId,
@@ -172,4 +180,35 @@ emailService.SendEmail(billetera.getPersona().getUsuario().getEmail(), "Carga Sa
     return this.enviarSaldo(importe, moneda, billeteraOrigenId,
             usuarioDestino.getPersona().getBilletera().getBilleteraId(), concepto, detalle);
 
-} } 
+} 
+public List<Transaccion> listarTransacciones(Billetera billetera, String moneda) {
+
+    List<Transaccion> movimientos = new ArrayList<>();
+
+    Cuenta cuenta = billetera.getCuenta(moneda);
+
+    for (Transaccion transaccion : cuenta.getTransacciones()) {
+
+        movimientos.add(transaccion);
+    }
+
+    return movimientos;
+}
+
+public List<Transaccion> listarTransacciones(Billetera billetera) {
+
+    List<Transaccion> movimientos = new ArrayList<>();
+
+    for (Cuenta cuenta : billetera.getCuentas()) {
+
+        for (Transaccion transaccion : cuenta.getTransacciones()) {
+
+            movimientos.add(transaccion);
+        }
+    }
+    return movimientos;
+}
+
+
+} 
+
