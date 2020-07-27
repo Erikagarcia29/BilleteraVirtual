@@ -48,7 +48,9 @@ public class UsuarioService {
     
 
         /**
-         * Metodo IniciarSesion recibe usuario y contraseña validar usuario y contraseña
+         * Metodo IniciarSesion 
+         * recibe usuario y contraseña 
+         * validar usuario y contraseña
          */
 
         Usuario u = buscarPorUsername(userName);
@@ -58,7 +60,8 @@ public class UsuarioService {
          throw new BadCredentialsException("Usuario o contraseña invalida");
            }
     }
-    public Usuario crearUsuario (String nombre ,Integer pais, Integer tipoDocumento, String documento, Date fechaNacimiento,
+    public Usuario crearUsuario (String nombre ,Integer pais,
+     Integer tipoDocumento, String documento, Date fechaNacimiento,
             String email, String password) {
 
         /*
@@ -69,7 +72,7 @@ public class UsuarioService {
         Persona persona = new Persona();
         persona.setNombre(nombre);
         persona.setPaisId(pais);
-        persona.setTipoDocumento(tipoDocumento);
+        persona.setTipoDocumentoId(tipoDocumento);
         persona.setDocumento(documento);
         persona.setFechaNacimiento(fechaNacimiento);
 

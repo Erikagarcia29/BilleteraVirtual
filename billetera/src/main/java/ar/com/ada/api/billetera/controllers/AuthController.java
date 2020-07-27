@@ -40,7 +40,8 @@ public class AuthController {
         // aca creamos la persona y el usuario a travez del service.
         // insertar codigo aqui 
         
-        Usuario usuario = usuarioService.crearUsuario(req.fullName, req.country, req.identificationType, req.identification, req.birthDate, req.email, req.password);
+        Usuario usuario = usuarioService.crearUsuario(req.fullName, req.country, req.identificationType,
+         req.identification, req.birthDate, req.email, req.password);
 
         r.isOk = true;
         r.message = "te registraste con exito";
@@ -51,7 +52,8 @@ public class AuthController {
     
 
     @PostMapping("auth/login")//probando nuestro login
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody LoginRequest authenticationRequest)throws Exception{
+    public ResponseEntity<?> createAuthenticationToken(@RequestBody LoginRequest authenticationRequest
+        )throws Exception{
         
         usuarioService.login(authenticationRequest.username, authenticationRequest.password);
         

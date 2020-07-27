@@ -93,7 +93,7 @@ public class Persona {
         return tipoDocumentoId;
     }
 
-    public void setTipoDocumento(Integer tipoDocumentoId) {
+    public void setTipoDocumentoId(Integer tipoDocumentoId) {
         this.tipoDocumentoId = tipoDocumentoId;
     }
 

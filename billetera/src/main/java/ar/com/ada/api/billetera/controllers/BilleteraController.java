@@ -1,10 +1,12 @@
 package ar.com.ada.api.billetera.controllers;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,9 +41,24 @@ public class BilleteraController {
      * 
      */
 
+       // Metodo de verificacion 1 del checkeo que el usuario que consulta sea el que
+    // corresponde
+    // Usamos el "Principal": que es una abstraccion que nos permite acceder al
+    // usuario que esta logueado
     @GetMapping("/billeteras/{id}/saldos/{moneda}")
-    public ResponseEntity<?> consultarSaldo(@PathVariable Integer id, @PathVariable String moneda) {
+    public ResponseEntity<?> consultarSaldo(Principal principal, @PathVariable Integer id,
+    @PathVariable String moneda) {
 
+// Obtengo primero el usuario en base al Principal
+Usuario usuarioLogueado = usuarioService.buscarPorUsername(principal.getName());
+// Checkqueo si la billetera le corresponde, si no, 403 Forbiden
+// Esto deberia hacerlo en cada metodo
+if (!usuarioLogueado.getPersona().getBilletera().getBilleteraId().equals(id)) {
+    //Generar una alerta de cyberseguridad
+
+    //Es responder un resultado mentiroso: ej 404
+    return ResponseEntity.status(403).build();// Forbideen
+}
         SaldoResponse saldo = new SaldoResponse();
 
         saldo.saldo = billeteraService.consultarSaldo(id, moneda);
@@ -50,7 +67,15 @@ public class BilleteraController {
         return ResponseEntity.ok(saldo);
     }
 
+     // Metodo Verificacion Billetera 2: haciendo lo mismo que antes, pero usando
+    // Spring Expression LANGUAGE(magic)
+    // Aca el principal es el User, este principal no es el mismo principal del
+    // metodo anterior
+    // pero apunta a uno parecido(el de arriba es el principal authentication)
+    // https://docs.spring.io/spring-security/site/docs/3.0.x/reference/el-access.html
+
     @GetMapping("/billeteras/{id}/saldos")
+    @PreAuthorize("@usuarioService.buscarPorUsername(principal.getUsername()).getPersona().getBilletera().getBilleteraId().equals(#id)")
     public ResponseEntity<List<SaldoResponse>> consultarSaldo(@PathVariable Integer id) {
 
         Billetera billetera = new Billetera();
