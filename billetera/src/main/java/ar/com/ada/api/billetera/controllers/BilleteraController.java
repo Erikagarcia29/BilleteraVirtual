@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -140,10 +141,22 @@ if (!usuarioLogueado.getPersona().getBilletera().getBilleteraId().equals(id)) {
         return ResponseEntity.badRequest().body(response);
 
     }
+    // Metodo Verificacion Billetera 3: haciendo lo mismo que antes, pero leyendo
+    // desde el el authority. O sea , cuando creamos el User para el UserDetails(no el usuario)
+    // Le seteamos una autoridad sobre la billetera X.
+    // Esto lo que hace es preguntar si tiene esa autoridad seteada.
+    // Dentro de este, tenemos 2 formas de llenar el Authority
+    // Llenandolo desde la Base de datos, o desde el JWT
+    // Desde la DB nos da mas seguridad pero cada vez que se ejecute es ir a buscar a la DB
+    // Desde el JWT, si bien exponemos el billeteraId, nos permite evitarnos ir a  la db.
+    // Este CLAIM lo podemos hacer con cualquier propiedad que querramos mandar
+    // al JWT
 
     @GetMapping("/billeteras/{id}/movimientos/{moneda}")
-    public ResponseEntity<List<MovimientosResponse>> consultarMovimientos(@PathVariable Integer id, @PathVariable String moneda){
-
+     @PreAuthorize("hasAuthority('CLAIM_billeteraId_'+#id)")
+    public ResponseEntity<List<MovimientosResponse>> consultarMovimientos(Authentication prinicpal,
+            @PathVariable Integer id, @PathVariable String moneda) {
+                
         Billetera billetera = new Billetera();
         billetera = billeteraService.buscarPorId(id);
         List<Transaccion> trancciones = billeteraService.listarTransacciones(billetera, moneda);
