@@ -3,20 +3,21 @@ package ar.com.ada.api.billetera.entities;
 import java.sql.Date;
 
 import javax.persistence.*;
+
 @Entity
-@Table(name="usuario")
+@Table(name = "usuario")
 public class Usuario {
     @Id
-    @Column(name="usuario_id")
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
-    private Integer usuarioId ;
+    @Column(name = "usuario_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer usuarioId;
     private String username;
     private String password;
     private String email;
-    @Column(name="fecha_login")
+    @Column(name = "fecha_login")
     private Date fechaLogin;
     @OneToOne
-    @JoinColumn(name="persona_id", referencedColumnName = "persona_id")
+    @JoinColumn(name = "persona_id", referencedColumnName = "persona_id")
     private Persona persona;
 
     public Integer getUsuarioId() {
@@ -66,4 +67,4 @@ public class Usuario {
     public void setPersona(Persona persona) {
         this.persona = persona;
     }
-} 
+}

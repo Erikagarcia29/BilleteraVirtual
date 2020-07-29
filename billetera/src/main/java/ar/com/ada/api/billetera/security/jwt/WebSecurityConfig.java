@@ -15,7 +15,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -59,10 +58,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
 
-        // No necesitamos CSRF para este ejemplo ya que somos API Rest y no tenemos ni cookies
-        //ni session
-        httpSecurity.csrf().disable()
-                .cors().and() //activamos cors! para que pueda ser llamado desde otro dominio
+        // No necesitamos CSRF para este ejemplo ya que somos API Rest y no tenemos ni
+        // cookies
+        // ni session
+        httpSecurity.csrf().disable().cors().and() // activamos cors! para que pueda ser llamado desde otro dominio
                 // no autenticar estos request particulares ya que pueden ingresar sin
                 // autenticacion
 

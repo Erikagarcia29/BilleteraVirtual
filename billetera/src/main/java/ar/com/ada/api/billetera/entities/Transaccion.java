@@ -1,41 +1,41 @@
 package ar.com.ada.api.billetera.entities;
-import java.util.Date; 
+
+import java.util.Date;
 import java.math.BigDecimal;
 import ar.com.ada.api.billetera.entities.Transaccion.TipoTransaccionEnum;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name="transaccion")
+@Table(name = "transaccion")
 
 public class Transaccion {
-    @ Id
-    @Column(name="transaccion_id")
+    @Id
+    @Column(name = "transaccion_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer transaccionId;
     @ManyToOne
-    @JoinColumn(name="cuenta_id",referencedColumnName = "cuenta_id")
-    private Cuenta cuenta ;
+    @JoinColumn(name = "cuenta_id", referencedColumnName = "cuenta_id")
+    private Cuenta cuenta;
     private Date fecha;
-    @Column(name="estado_id")
+    @Column(name = "estado_id")
     private Integer estadoId;
     private BigDecimal importe;
-    private String moneda ;
-    @Column(name="tipo_operacion")
+    private String moneda;
+    @Column(name = "tipo_operacion")
     private TipoTransaccionEnum tipoOperacion;
-    @Column(name="concepto_operacion")
+    @Column(name = "concepto_operacion")
     private String conceptoOperacion;
     private String detalle;
-    @Column(name="de_usuario_id")
+    @Column(name = "de_usuario_id")
     private Integer deUsuarioId;
-    @Column(name="a_usuario_id")
+    @Column(name = "a_usuario_id")
     private Integer aUsuarioId;
-    @Column(name="de_cuenta_id")
+    @Column(name = "de_cuenta_id")
     private Integer deCuentaId;
 
-    @Column(name="a_cuenta_id")
+    @Column(name = "a_cuenta_id")
     private Integer aCuentaId;
-
 
     public Integer getTransaccionId() {
         return transaccionId;
@@ -44,11 +44,12 @@ public class Transaccion {
     public void setTransaccionId(Integer transaccionId) {
         this.transaccionId = transaccionId;
     }
-    
+
     public Cuenta getCuenta() {
         return cuenta;
     }
-// esta bidireccion va a tarvez del set cuenta 
+
+    // esta bidireccion va a tarvez del set cuenta
     public void setCuenta(Cuenta cuenta) {
         this.cuenta = cuenta;
         this.cuenta.agregarTransaccion(this);
@@ -59,7 +60,7 @@ public class Transaccion {
     }
 
     public void setFecha(java.util.Date date) {
-        this.fecha =new Date();
+        this.fecha = new Date();
     }
 
     public Integer getEstadoId() {
@@ -87,12 +88,12 @@ public class Transaccion {
     }
 
     public TipoTransaccionEnum getTipoOperacion() {
-    	        return tipoOperacion;
-    }	    
+        return tipoOperacion;
+    }
 
-	    public void setTipoOperacion(TipoTransaccionEnum tipoOperacion) {
-               this.tipoOperacion = tipoOperacion;
-    }	    
+    public void setTipoOperacion(TipoTransaccionEnum tipoOperacion) {
+        this.tipoOperacion = tipoOperacion;
+    }
 
     public String getConceptoOperacion() {
         return conceptoOperacion;
@@ -142,8 +143,7 @@ public class Transaccion {
         this.aCuentaId = aCuentaId;
     }
 
-
-      /***
+    /***
      * En este caso es un ENUMERADO con numeracion default En JAVA. Estos comienzan
      * desde 0 y si intercambiamos el orden el 0 pasa a ser siempre el primero. Si
      * quisieramos tener uno customizado, en JAVA es mas complejo(se ahoga en un
@@ -194,8 +194,3 @@ public class Transaccion {
     }
 
 }
-
-    
-
-
-

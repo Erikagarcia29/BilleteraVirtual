@@ -6,7 +6,7 @@ public class ErrorResponseItem {
         this.message = message;
     }
 
-public String field;
-public String message;
-    
+    public String field;
+    public String message;
+
 }

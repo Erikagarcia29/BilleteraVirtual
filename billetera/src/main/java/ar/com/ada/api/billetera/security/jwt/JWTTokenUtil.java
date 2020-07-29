@@ -1,4 +1,5 @@
 package ar.com.ada.api.billetera.security.jwt;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
@@ -74,6 +75,7 @@ public class JWTTokenUtil implements Serializable {
         return doGenerateToken(claims, userDetails.getUsername());
 
     }
+
     public String generateToken(UserDetails userDetails, Map<String, Object> claims) {
 
         return doGenerateToken(claims, userDetails.getUsername());
@@ -107,4 +109,4 @@ public class JWTTokenUtil implements Serializable {
 
     }
 
-} 
+}

@@ -31,7 +31,6 @@ public class EmailService {
     @Value("${emailSettings.enabled}")
     public boolean enabled;
 
-
     // Basico
     public void SendEmail(String email, String subject, String message) throws UnirestException {
 
@@ -40,18 +39,10 @@ public class EmailService {
 
         JsonNode r;
         HttpResponse<JsonNode> request = Unirest.post("https://api.mailgun.net/v3/" + this.domain + "/messages")
-                .basicAuth("api", this.apiKey)
-                .field("from", this.from)
-                .field("to", email)
-                .field("subject", subject)
+                .basicAuth("api", this.apiKey).field("from", this.from).field("to", email).field("subject", subject)
                 .field("text", message).asJson();
 
         r = request.getBody();
 
     }
 }
-
-
-
-
-    

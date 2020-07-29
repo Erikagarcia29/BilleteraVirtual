@@ -10,22 +10,23 @@ import ar.com.ada.api.billetera.entities.Transaccion.TipoTransaccionEnum;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.data.repository.query.parser.Part.IgnoreCaseType;
+
 @Entity
-@Table(name="cuenta")
+@Table(name = "cuenta")
 public class Cuenta {
     @Id
-    @Column(name="cuenta_id")
+    @Column(name = "cuenta_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer cuentaId;
-    private BigDecimal saldo ;
+    private BigDecimal saldo;
     private String moneda;
     @ManyToOne
-    @JoinColumn(name= " billetera_id",referencedColumnName = "billetera_id")
-    private Billetera billetera ;
-    @OneToMany(mappedBy = "cuenta",cascade = CascadeType.ALL)
+    @JoinColumn(name = " billetera_id", referencedColumnName = "billetera_id")
+    private Billetera billetera;
+    @OneToMany(mappedBy = "cuenta", cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
     @JsonIgnore
-    private List<Transaccion >transacciones = new ArrayList <>();
+    private List<Transaccion> transacciones = new ArrayList<>();
 
     public Integer getCuentaId() {
         return cuentaId;
@@ -66,57 +67,52 @@ public class Cuenta {
     public void setTransacciones(List<Transaccion> transacciones) {
         this.transacciones = transacciones;
     }
-   // la relacion bidireccional es atravez de un metodo que agrega a la lista
-   public void agregarTransaccion(Transaccion transaccion){
-    this.transacciones.add(transaccion);
-    transaccion.setCuenta(this);
 
-    BigDecimal saldoActual = this.getSaldo();
-    BigDecimal importe = transaccion.getImporte();
-    BigDecimal saldoNuevo;
-		if (transaccion.getTipoOperacion()== TipoTransaccionEnum.ENTRANTE) {
+    // la relacion bidireccional es atravez de un metodo que agrega a la lista
+    public void agregarTransaccion(Transaccion transaccion) {
+        this.transacciones.add(transaccion);
+        transaccion.setCuenta(this);
 
+        BigDecimal saldoActual = this.getSaldo();
+        BigDecimal importe = transaccion.getImporte();
+        BigDecimal saldoNuevo;
+        if (transaccion.getTipoOperacion() == TipoTransaccionEnum.ENTRANTE) {
 
-			 saldoNuevo = saldoActual.add(importe);
-		
-		} else {
+            saldoNuevo = saldoActual.add(importe);
 
-			 saldoNuevo = saldoActual.subtract(importe);
-			
+        } else {
+
+            saldoNuevo = saldoActual.subtract(importe);
+
         }
         this.setSaldo(saldoNuevo);
 
-	}
+    }
 
-	public Transaccion generarTransaccion(String conceptoOperacion, String detalle, BigDecimal importe,
-			TipoTransaccionEnum tipoOp) {
+    public Transaccion generarTransaccion(String conceptoOperacion, String detalle, BigDecimal importe,
+            TipoTransaccionEnum tipoOp) {
 
-		Transaccion transaccion = new Transaccion();
+        Transaccion transaccion = new Transaccion();
 
-		transaccion.setMoneda(moneda);
-		transaccion.setFecha(new Date());
-		transaccion.setConceptoOperacion(conceptoOperacion);
-		transaccion.setDetalle(detalle);
-		transaccion.setImporte(importe);
-		transaccion.setTipoOperacion(tipoOp);// 1 Entrada, 0 Salida
-		transaccion.setEstadoId(2);// -1 Rechazada 0 Pendiente 2 Aprobada
+        transaccion.setMoneda(moneda);
+        transaccion.setFecha(new Date());
+        transaccion.setConceptoOperacion(conceptoOperacion);
+        transaccion.setDetalle(detalle);
+        transaccion.setImporte(importe);
+        transaccion.setTipoOperacion(tipoOp);// 1 Entrada, 0 Salida
+        transaccion.setEstadoId(2);// -1 Rechazada 0 Pendiente 2 Aprobada
 
-		if (transaccion.getTipoOperacion() == TipoTransaccionEnum.ENTRANTE) { // Es de entrada
+        if (transaccion.getTipoOperacion() == TipoTransaccionEnum.ENTRANTE) { // Es de entrada
 
-			transaccion.setaUsuarioId(billetera.getPersona().getUsuario().getUsuarioId());
-			transaccion.setaCuentaId(this.getCuentaId());
-		} else {
-			// Es de salida
-			transaccion.setDeCuentaId(this.getCuentaId());
-			transaccion.setDeUsuarioId(billetera.getPersona().getUsuario().getUsuarioId());
-		}
+            transaccion.setaUsuarioId(billetera.getPersona().getUsuario().getUsuarioId());
+            transaccion.setaCuentaId(this.getCuentaId());
+        } else {
+            // Es de salida
+            transaccion.setDeCuentaId(this.getCuentaId());
+            transaccion.setDeUsuarioId(billetera.getPersona().getUsuario().getUsuarioId());
+        }
 
-		return transaccion;
-	}
-    
+        return transaccion;
+    }
 
-} 
-
-
-
-    
+}

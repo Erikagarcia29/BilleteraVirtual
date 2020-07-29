@@ -7,5 +7,4 @@ public class LoginResponse {
     public int billeteraId;
     public String email;
 
-    
 }

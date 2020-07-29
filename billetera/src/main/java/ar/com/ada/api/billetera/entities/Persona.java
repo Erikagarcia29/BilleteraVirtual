@@ -30,7 +30,6 @@ public class Persona {
     @Column(name = "fecha_nacimiento")
     private Date fechaNacimiento;
 
-
     @OneToOne(mappedBy = "persona", cascade = CascadeType.ALL)
     private Usuario usuario;
 
@@ -53,8 +52,6 @@ public class Persona {
         this.nombre = nombre;
     }
 
-    
-
     public Date getFechaNacimiento() {
         return fechaNacimiento;
     }
@@ -66,6 +63,7 @@ public class Persona {
     public Usuario getUsuario() {
         return usuario;
     }
+
     // la bideireccion es a travez del set
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
@@ -75,7 +73,8 @@ public class Persona {
     public Billetera getBilletera() {
         return billetera;
     }
-    // aca la relacion bidireccional es a travez del set 
+
+    // aca la relacion bidireccional es a travez del set
     public void setBilletera(Billetera billetera) {
         this.billetera = billetera;
         this.billetera.setPersona(this);

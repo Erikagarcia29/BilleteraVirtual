@@ -8,5 +8,5 @@ public class EnvioSaldoRequest {
     public String email;
     public String motivo;
     public String detalle;
-    
+
 }

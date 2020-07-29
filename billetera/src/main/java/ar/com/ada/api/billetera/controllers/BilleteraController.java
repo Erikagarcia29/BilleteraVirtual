@@ -42,24 +42,24 @@ public class BilleteraController {
      * 
      */
 
-       // Metodo de verificacion 1 del checkeo que el usuario que consulta sea el que
+    // Metodo de verificacion 1 del checkeo que el usuario que consulta sea el que
     // corresponde
     // Usamos el "Principal": que es una abstraccion que nos permite acceder al
     // usuario que esta logueado
     @GetMapping("/billeteras/{id}/saldos/{moneda}")
     public ResponseEntity<?> consultarSaldo(Principal principal, @PathVariable Integer id,
-    @PathVariable String moneda) {
+            @PathVariable String moneda) {
 
-// Obtengo primero el usuario en base al Principal
-Usuario usuarioLogueado = usuarioService.buscarPorUsername(principal.getName());
-// Checkqueo si la billetera le corresponde, si no, 403 Forbiden
-// Esto deberia hacerlo en cada metodo
-if (!usuarioLogueado.getPersona().getBilletera().getBilleteraId().equals(id)) {
-    //Generar una alerta de cyberseguridad
+        // Obtengo primero el usuario en base al Principal
+        Usuario usuarioLogueado = usuarioService.buscarPorUsername(principal.getName());
+        // Checkqueo si la billetera le corresponde, si no, 403 Forbiden
+        // Esto deberia hacerlo en cada metodo
+        if (!usuarioLogueado.getPersona().getBilletera().getBilleteraId().equals(id)) {
+            // Generar una alerta de cyberseguridad
 
-    //Es responder un resultado mentiroso: ej 404
-    return ResponseEntity.status(403).build();// Forbideen
-}
+            // Es responder un resultado mentiroso: ej 404
+            return ResponseEntity.status(403).build();// Forbideen
+        }
         SaldoResponse saldo = new SaldoResponse();
 
         saldo.saldo = billeteraService.consultarSaldo(id, moneda);
@@ -68,7 +68,7 @@ if (!usuarioLogueado.getPersona().getBilletera().getBilleteraId().equals(id)) {
         return ResponseEntity.ok(saldo);
     }
 
-     // Metodo Verificacion Billetera 2: haciendo lo mismo que antes, pero usando
+    // Metodo Verificacion Billetera 2: haciendo lo mismo que antes, pero usando
     // Spring Expression LANGUAGE(magic)
     // Aca el principal es el User, este principal no es el mismo principal del
     // metodo anterior
@@ -142,21 +142,24 @@ if (!usuarioLogueado.getPersona().getBilletera().getBilleteraId().equals(id)) {
 
     }
     // Metodo Verificacion Billetera 3: haciendo lo mismo que antes, pero leyendo
-    // desde el el authority. O sea , cuando creamos el User para el UserDetails(no el usuario)
+    // desde el el authority. O sea , cuando creamos el User para el UserDetails(no
+    // el usuario)
     // Le seteamos una autoridad sobre la billetera X.
     // Esto lo que hace es preguntar si tiene esa autoridad seteada.
     // Dentro de este, tenemos 2 formas de llenar el Authority
     // Llenandolo desde la Base de datos, o desde el JWT
-    // Desde la DB nos da mas seguridad pero cada vez que se ejecute es ir a buscar a la DB
-    // Desde el JWT, si bien exponemos el billeteraId, nos permite evitarnos ir a  la db.
+    // Desde la DB nos da mas seguridad pero cada vez que se ejecute es ir a buscar
+    // a la DB
+    // Desde el JWT, si bien exponemos el billeteraId, nos permite evitarnos ir a la
+    // db.
     // Este CLAIM lo podemos hacer con cualquier propiedad que querramos mandar
     // al JWT
 
     @GetMapping("/billeteras/{id}/movimientos/{moneda}")
-     @PreAuthorize("hasAuthority('CLAIM_billeteraId_'+#id)")
+    @PreAuthorize("hasAuthority('CLAIM_billeteraId_'+#id)")
     public ResponseEntity<List<MovimientosResponse>> consultarMovimientos(Authentication prinicpal,
             @PathVariable Integer id, @PathVariable String moneda) {
-                
+
         Billetera billetera = new Billetera();
         billetera = billeteraService.buscarPorId(id);
         List<Transaccion> trancciones = billeteraService.listarTransacciones(billetera, moneda);
@@ -178,8 +181,9 @@ if (!usuarioLogueado.getPersona().getBilletera().getBilleteraId().equals(id)) {
         }
         return ResponseEntity.ok(res);
     }
-@GetMapping("/billeteras/{id}/movimientos")
-    public ResponseEntity<List<MovimientosResponse>> consultarMovimientos(@PathVariable Integer id){
+
+    @GetMapping("/billeteras/{id}/movimientos")
+    public ResponseEntity<List<MovimientosResponse>> consultarMovimientos(@PathVariable Integer id) {
 
         Billetera billetera = new Billetera();
         billetera = billeteraService.buscarPorId(id);
