@@ -52,7 +52,7 @@ public class Transaccion {
     // esta bidireccion va a tarvez del set cuenta
     public void setCuenta(Cuenta cuenta) {
         this.cuenta = cuenta;
-        this.cuenta.agregarTransaccion(this);
+        
     }
 
     public Date getFecha() {
